@@ -42,10 +42,10 @@ class DocumentSymbol
     """
     The kind of this symbol. See [SymbolKinds](lsp-SymbolKinds.md).
     """
-  let tags: (Array[I64] ref | None) 
+  let tags: (Array[I64] ref | None)
     """
     Tags for this document symbol.
-	
+
 	since 3.16.0
     """
   let range: LspPositionRange
@@ -63,14 +63,14 @@ class DocumentSymbol
 
   let children: Array[DocumentSymbol] ref
     """
-    Children of this symbol, e.g. properties of a class.  
+    Children of this symbol, e.g. properties of a class.
     """
 
   new ref create(
     name': String,
-    kind': I64, 
+    kind': I64,
     range': LspPositionRange,
-    selection_range': LspPositionRange) 
+    selection_range': LspPositionRange)
   =>
     name = name'
     detail = None
@@ -99,14 +99,14 @@ class DocumentSymbol
         end
         builder = builder("tags", json_tags)
     end
-    if this.children.size() > 0 then 
+    if this.children.size() > 0 then
       var json_children = Arr
       for child in this.children.values() do
         json_children = json_children(child.to_json())
       end
       builder = builder("children", json_children)
     end
-        
+
     builder.build()
 
 primitive DocumentSymbols
@@ -167,7 +167,7 @@ primitive DocumentSymbols
     end
       for entity_child in members.children() do
         try
-          let maybe_kind_and_idx = 
+          let maybe_kind_and_idx =
             match entity_child.id()
             | TokenIds.tk_new() => (SymbolKinds.constructor(), USize(1))
             | TokenIds.tk_fun() | TokenIds.tk_be() => (SymbolKinds.method(), USize(1))

@@ -1,7 +1,7 @@
 use "collections"
 use "files"
 use "itertools"
-use "immutable-json"
+use "../immutable-json"
 
 class val WorkspaceData
   """
@@ -32,7 +32,7 @@ class val WorkspaceData
         Iter[String](dependencies'.values())
           .collect(Array[String].create(dependencies'.size()))
       end
-    dependency_paths = 
+    dependency_paths =
       recover val
         Iter[String](dependencies.values())
           .map[String]({(dep): String? => folder.join("_corral")?.join(dep)?.path})
@@ -88,5 +88,3 @@ class val WorkspaceData
     else
       error
     end
-
-

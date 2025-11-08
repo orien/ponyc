@@ -3,7 +3,7 @@ use "assert"
 use "collections"
 use "files"
 use "itertools"
-use "immutable-json"
+use "../immutable-json"
 
 class WorkspaceScanner
   let _channel: Channel
@@ -55,7 +55,7 @@ class WorkspaceScanner
           try
             // scan for transitive dependencies
             // but only if we havent visited before
-            // to avoid endlees loops over cyclic dependencies 
+            // to avoid endlees loops over cyclic dependencies
             let sub_workspace = this._scan_corral_dir(locator_dir, workspace_name, visited)?
             for sub_dependency in sub_workspace.dependencies.values() do
               dependencies.set(sub_dependency)
@@ -113,6 +113,3 @@ class WorkspaceScanner
     let workspaces = handler.workspaces = []
     _channel.log(workspaces.size().string() + " Workspaces found in " + folder)
     consume workspaces
-
-
-

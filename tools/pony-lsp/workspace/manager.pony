@@ -2,8 +2,8 @@ use ".."
 use "collections"
 use "files"
 
-use "ast"
-use "immutable-json"
+use "../ast"
+use "../immutable-json"
 
 actor WorkspaceManager
   """
@@ -12,11 +12,11 @@ actor WorkspaceManager
   A workspace is initially created by scanning its directory and extracting information from available
   `corral.json` files.
 
-  More information is obtained during execution of the type-checking pipeline of the libponyc compiler. 
+  More information is obtained during execution of the type-checking pipeline of the libponyc compiler.
   While the initial information must be enough to successfully type-check the program (populating the `$PONYPATH` env var),
   the AST we get back from type-checking contains all packages the program in this workspace consists of.
 
-  After first successful compilation we should have all information at hand to do LSP work. 
+  After first successful compilation we should have all information at hand to do LSP work.
   i.e. all packages we can move to from opened files in the workspace should be available.
   """
   let workspace: WorkspaceData
@@ -93,7 +93,7 @@ actor WorkspaceManager
     | let errors: Array[Error val] val =>
 
       this._channel.log("Compilation failed with " + errors.size().string() + " errors")
-      
+
       for err in errors.values() do
         this._channel.log("ERROR: " + err.msg + " in file " + err.file.string())
         let diagnostic = Diagnostic.from_error(err)
@@ -108,7 +108,7 @@ actor WorkspaceManager
           }
         )
       end
-      
+
     end
     // notify client about errors if any
     // create (or clear) error diagnostics message for each open file
@@ -209,7 +209,7 @@ actor WorkspaceManager
     else
       _channel.log("document not in workspace: " + document_path)
     end
-  
+
   be hover(document_uri: String, request: RequestMessage val) =>
     """
     Handling the textDocument/hover request
@@ -429,5 +429,3 @@ actor WorkspaceManager
     for package_state in this._packages.values() do
       package_state.dispose()
     end
-
-

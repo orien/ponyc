@@ -2,7 +2,7 @@ use "collections"
 use "files"
 use "itertools"
 
-use "ast"
+use "../ast"
 
 use ".."
 
@@ -30,8 +30,8 @@ class PackageState
       end
     ) + "):\n\t" + "\n\t".join(
       Iter[(String box, DocumentState box)](documents.pairs())
-        .map[String]({(kv) => 
-          kv._1 + " (" + 
+        .map[String]({(kv) =>
+          kv._1 + " (" +
             match kv._2.module
             | let m: Module => "M"
             else
@@ -121,7 +121,7 @@ class DocumentState
     // only update if it was requested already
     if this._document_symbols isnt None then
       this._document_symbols = DocumentSymbols.from_module(module', this._channel)
-      
+
     end
     this.hash = module'.hash()
 
