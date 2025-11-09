@@ -1,11 +1,10 @@
-use ".."
 use "pony_test"
 use "collections"
-use "peg"
+use "../peg"
 use "itertools"
 use "debug"
 
-primitive JSONPathTests is TestList
+primitive _JSONPathTests is TestList
   fun tag tests(test: PonyTest) =>
     test(_ParserRFCExamples)
     test(_ExamplesTest.create(_ChildSegmentRFCExamples))
@@ -54,7 +53,7 @@ class \nodoc\ iso _ParserRFCExamples is UnitTest
     for example in examples.values() do
       let source = Source.from_string(example)
       match parser.parse(source)
-      | (let idx: USize, let p: Parser) => 
+      | (let idx: USize, let p: Parser) =>
           h.fail("[FAILED] Query: '" + example + "': idx=" + idx.string())
       | (let idx: USize, let ast: ASTChild) =>
           h.log("[SUCCESS] Query: '" + example + "': idx=" + idx.string() + " ast=" + ast.label().text())
@@ -89,7 +88,7 @@ class \nodoc\ iso _ExamplesTest is UnitTest
     input = example.input()
     queries = example.queries()
     _name = "jsonpath/rfc_examples/" + example.name()
-  
+
   fun name(): String => _name
 
   fun apply(h: TestHelper) ? =>
@@ -98,7 +97,7 @@ class \nodoc\ iso _ExamplesTest is UnitTest
       let query = JsonPath.compile(source)?
       h.log("Query: '" + source + "' compiled successfully")
       let actual_output = recover val query.execute(input) end
-      
+
       h.assert_eq[String](
         _JSON.s_array(expected_output),
         _JSON.s_array(actual_output),
@@ -149,16 +148,16 @@ class _DescendantSegmentRFCExamples
     [
       ("$..j",    [as JsonType: I64(1); I64(4)])
       ("$..[0]",  [as JsonType: I64(5); try _JSON.d("""{"j": 4}""")? end])
-      ("$..*", [as JsonType: 
-        try _JSON.d("""[5, 3, [{"j": 4}, {"k": 6}]]""")? end 
-        try _JSON.d("""{"j": 1, "k": 2}""")? end 
+      ("$..*", [as JsonType:
+        try _JSON.d("""[5, 3, [{"j": 4}, {"k": 6}]]""")? end
+        try _JSON.d("""{"j": 1, "k": 2}""")? end
         I64(5)
         I64(3)
-        try _JSON.d("""[{"j": 4}, {"k": 6}]""")? end 
+        try _JSON.d("""[{"j": 4}, {"k": 6}]""")? end
         I64(1)
         I64(2)
-        try _JSON.d("""{"j": 4}""")? end 
-        try _JSON.d("""{"k": 6}""")? end 
+        try _JSON.d("""{"j": 4}""")? end
+        try _JSON.d("""{"k": 6}""")? end
         I64(4)
         I64(6)
       ])
@@ -169,8 +168,8 @@ class _DescendantSegmentRFCExamples
 
 primitive _MainRFCExamples
   fun tag name(): String => "main"
-  fun tag input(): JsonType => 
-    try 
+  fun tag input(): JsonType =>
+    try
       _JSON.d("""
       { "store": {
           "book": [
@@ -257,7 +256,7 @@ primitive _MainRFCExamples
                         "isbn": "0-395-19395-8",
                         "price": 22.99
                       }""")? end])
-    ("$..book[0,1]", [as JsonType: 
+    ("$..book[0,1]", [as JsonType:
       try _JSON.d("""
         { "category": "reference",
            "author": "Nigel Rees",
@@ -270,7 +269,7 @@ primitive _MainRFCExamples
            "title": "Sword of Honour",
            "price": 12.99
         }""")? end])
-    ("$..book[:2]", [as JsonType: 
+    ("$..book[:2]", [as JsonType:
       try _JSON.d("""
         { "category": "reference",
            "author": "Nigel Rees",
@@ -399,7 +398,7 @@ primitive _MainRFCExamples
       "fiction"
       "J. R. R. Tolkien"
     ])
-  ] 
+  ]
 
 
 primitive _JSON

@@ -1,7 +1,6 @@
-use ".."
 use "pony_test"
 
-primitive JSONBuilderTests is TestList
+primitive _JSONBuilderTests is TestList
   fun tag tests(test: PonyTest) =>
     test(ObjBuilderTest)
     test(ArrBuilderTest)
@@ -30,4 +29,3 @@ class \nodoc\ iso ArrBuilderTest is UnitTest
       [{"foo":"bar"},null,42]""",
       json.string()
     )
-

@@ -1,8 +1,7 @@
-use ".."
 use "pony_test"
 use "collections"
 
-primitive JSONTests is TestList
+primitive _JSONTests is TestList
   fun tag tests(test: PonyTest) =>
     test(_TestParseBasic)
     test(_TestParseKeyword)
